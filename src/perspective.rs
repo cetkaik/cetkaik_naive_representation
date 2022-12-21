@@ -163,8 +163,8 @@ pub const fn to_relative_side(side: AbsoluteSide, p: Perspective) -> relative::S
 /// # Examples
 /// ```
 /// use cetkaik_fundamental::*;
-/// use cetkaik_naive::*;
-/// use cetkaik_naive::perspective::*;
+/// use cetkaik_naive_representation::*;
+/// use cetkaik_naive_representation::perspective::*;
 /// assert_eq!(
 ///     to_relative_piece(absolute::Piece::Tam2, Perspective::IaIsDownAndPointsUpward),
 ///     relative::Piece::Tam2
@@ -199,8 +199,8 @@ pub const fn to_relative_piece(piece: absolute::Piece, p: Perspective) -> relati
 /// # Examples
 /// ```
 /// use cetkaik_fundamental::*;
-/// use cetkaik_naive::*;
-/// use cetkaik_naive::perspective::*;
+/// use cetkaik_naive_representation::*;
+/// use cetkaik_naive_representation::perspective::*;
 /// assert_eq!(
 ///     to_absolute_piece(relative::Piece::Tam2, Perspective::IaIsDownAndPointsUpward),
 ///     absolute::Piece::Tam2
@@ -234,8 +234,8 @@ pub const fn to_absolute_piece(piece: relative::Piece, p: Perspective) -> absolu
 /// ／`relative::Coord` を `absolute::Coord` に変換する。
 /// # Examples
 /// ```
-/// use cetkaik_naive::*;
-/// use cetkaik_naive::perspective::*;
+/// use cetkaik_naive_representation::*;
+/// use cetkaik_naive_representation::perspective::*;
 /// assert_eq!(
 ///     to_absolute_coord([2, 4], Perspective::IaIsDownAndPointsUpward),
 ///     absolute::Coord(absolute::Row::I, absolute::Column::Z)
@@ -279,8 +279,8 @@ pub fn to_absolute_coord(coord: relative::Coord, p: Perspective) -> absolute::Co
 /// ／`absolute::Coord` を `relative::Coord` に変換する。
 /// # Examples
 /// ```
-/// use cetkaik_naive::*;
-/// use cetkaik_naive::perspective::*;
+/// use cetkaik_naive_representation::*;
+/// use cetkaik_naive_representation::perspective::*;
 /// assert_eq!(
 ///     to_relative_coord(absolute::Coord(absolute::Row::I, absolute::Column::Z), Perspective::IaIsDownAndPointsUpward),
 ///     [2, 4]

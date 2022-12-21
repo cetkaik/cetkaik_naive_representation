@@ -7,7 +7,7 @@
 //! 座標、9x9の盤面（`Board`）、そしてそれに手駒を加えたもの （`Field`）などをナイーブに表す
 
 use cetkaik_fundamental::{Profession, ColorAndProf, AbsoluteSide};
-use cetkaik_interface::CetkaikRepresentation;
+use cetkaik_traits::CetkaikRepresentation;
 
 
 /// Defines things in terms of relative view: "which piece is opponent's?"／相対座標ベース。「どの駒が相手の駒？」という話をする

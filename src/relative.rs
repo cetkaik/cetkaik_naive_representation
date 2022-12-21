@@ -1,5 +1,5 @@
 use cetkaik_fundamental::{Color, Profession};
-use cetkaik_interface::{IsBoard, IsField};
+use cetkaik_traits::{IsBoard, IsField};
 
 /// Describes which player it is
 /// ／どちら側のプレイヤーであるかを指定する。
@@ -151,7 +151,7 @@ pub type Coord = [usize; 2];
 /// ／[`Coord`](./type.Coord.html) を JSON スタイルで文字列にする。
 /// # Examples
 /// ```
-/// use cetkaik_naive::relative::*;
+/// use cetkaik_naive_representation::relative::*;
 ///
 /// assert_eq!(serialize_coord([5,6]), "[5,6]")
 /// ```
@@ -195,7 +195,7 @@ const fn serialize_side(side: Side) -> &'static str {
 /// # Examples
 /// ```
 /// use cetkaik_fundamental::*;
-/// use cetkaik_naive::relative::*;
+/// use cetkaik_naive_representation::relative::*;
 ///
 /// assert_eq!(serialize_piece(Piece::Tam2), "皇");
 /// assert_eq!(serialize_piece(Piece::NonTam2Piece {
@@ -577,7 +577,7 @@ pub fn rotate_board(b: &Board) -> Board {
 /// ／2点間の距離（x座標の差およびy座標の差のうち小さくない方）を計算する。
 /// # Examples
 /// ```
-/// use cetkaik_naive::relative::*;
+/// use cetkaik_naive_representation::relative::*;
 /// assert_eq!(5, distance([4,5], [4,0]));
 /// assert_eq!(3, distance([4,5], [1,2]));
 /// assert_eq!(3, distance([1,2], [4,5]));
@@ -686,8 +686,8 @@ impl PureMove {
     /// # Examples
     /// ```
     /// use cetkaik_fundamental::*;
-    /// use cetkaik_naive::*;
-    /// use cetkaik_naive::relative::*;
+    /// use cetkaik_naive_representation::*;
+    /// use cetkaik_naive_representation::relative::*;
     ///
     /// assert_eq!(PureMove::InfAfterStep {
     ///     src: [0, 4],

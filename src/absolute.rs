@@ -1,5 +1,5 @@
 use cetkaik_fundamental::{AbsoluteSide, Color, ColorAndProf, Profession};
-use cetkaik_interface::IsAbsoluteField;
+use cetkaik_traits::IsAbsoluteField;
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 
@@ -31,9 +31,9 @@ pub enum Piece {
 ///
 /// Examples:
 /// ```
-/// use cetkaik_naive::absolute::{distance, Coord};
-/// use cetkaik_naive::absolute::Row::*;
-/// use cetkaik_naive::absolute::Column::*;
+/// use cetkaik_naive_representation::absolute::{distance, Coord};
+/// use cetkaik_naive_representation::absolute::Row::*;
+/// use cetkaik_naive_representation::absolute::Column::*;
 ///
 /// assert_eq!(2, distance(Coord(A, K), Coord(I, N)));
 /// assert_eq!(2, distance(Coord(I, K), Coord(I, N)));
@@ -56,9 +56,9 @@ pub fn distance(a: Coord, b: Coord) -> i32 {
 ///
 /// Examples:
 /// ```
-/// use cetkaik_naive::absolute::{same_direction, Coord};
-/// use cetkaik_naive::absolute::Row::*;
-/// use cetkaik_naive::absolute::Column::*;
+/// use cetkaik_naive_representation::absolute::{same_direction, Coord};
+/// use cetkaik_naive_representation::absolute::Row::*;
+/// use cetkaik_naive_representation::absolute::Column::*;
 ///
 /// assert_eq!(true, same_direction(Coord(IA, Z), Coord(A, Z), Coord(E, Z)));
 /// assert_eq!(false, same_direction(Coord(IA, Z), Coord(A, P), Coord(E, Z)));
@@ -139,13 +139,13 @@ pub const fn is_water(Coord(row, col): Coord) -> bool {
     }
 }
 
-impl cetkaik_interface::IsAbsoluteBoard for Board {
+impl cetkaik_traits::IsAbsoluteBoard for Board {
     fn yhuap_initial() -> Self {
         yhuap_initial_board()
     }
 }
 
-impl cetkaik_interface::IsBoard for Board {
+impl cetkaik_traits::IsBoard for Board {
     type PieceWithSide = Piece;
 
     type Coord = Coord;
@@ -186,7 +186,7 @@ impl cetkaik_interface::IsBoard for Board {
     }
 }
 
-impl cetkaik_interface::IsField for Field {
+impl cetkaik_traits::IsField for Field {
     type Board = Board;
     type Coord = Coord;
     type PieceWithSide = Piece;
@@ -438,7 +438,7 @@ impl FromStr for Coord {
 /// Parses [`Coord`](type.Coord.html). ／ 文字列を[`Coord`](type.Coord.html)にする。
 /// # Examples
 /// ```
-/// use cetkaik_naive::absolute::*;
+/// use cetkaik_naive_representation::absolute::*;
 /// assert_eq!(
 ///     parse_coord("LIA"),
 ///     Some(Coord(Row::IA, Column::L))
@@ -494,7 +494,7 @@ pub fn parse_coord(coord: &str) -> Option<Coord> {
 ///
 /// # Examples
 /// ```
-/// use cetkaik_naive::absolute::{yhuap_initial_board, Row, Column, Coord, Piece};
+/// use cetkaik_naive_representation::absolute::{yhuap_initial_board, Row, Column, Coord, Piece};
 /// use cetkaik_fundamental::{Color, Profession, AbsoluteSide};
 /// assert_eq!(Some(&Piece::Tam2), yhuap_initial_board().0.get(&Coord(Row::O, Column::Z)));
 /// assert_eq!(
@@ -506,7 +506,7 @@ pub fn parse_coord(coord: &str) -> Option<Coord> {
 /// This function is consistent with `relative::yhuap_initial_board_where_black_king_points_upward`:
 ///
 /// ```
-/// use cetkaik_naive::{absolute, relative, perspective};
+/// use cetkaik_naive_representation::{absolute, relative, perspective};
 /// assert_eq!(perspective::to_absolute_board(
 ///     &relative::yhuap_initial_board_where_black_king_points_upward(),
 ///     perspective::Perspective::IaIsDownAndPointsUpward
@@ -911,7 +911,7 @@ pub fn yhuap_initial_board() -> Board {
 /// Serializes [`Coord`](../type.Coord.html).／[`Coord`](../type.Coord.html)を文字列にする。
 /// # Examples
 /// ```
-/// use cetkaik_naive::absolute::*;
+/// use cetkaik_naive_representation::absolute::*;
 ///
 /// assert_eq!(serialize_coord(Coord(Row::E, Column::N)), "NE");
 /// assert_eq!(serialize_coord(Coord(Row::AU, Column::Z)), "ZAU");
@@ -958,7 +958,7 @@ impl std::fmt::Display for Coord {
 /// # Examples
 /// ```
 /// use cetkaik_fundamental::*;
-/// use cetkaik_naive::absolute::*;
+/// use cetkaik_naive_representation::absolute::*;
 ///
 /// assert_eq!(PureMove::InfAfterStep {
 ///     src: Coord(Row::A, Column::Z),
