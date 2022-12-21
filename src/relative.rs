@@ -219,7 +219,7 @@ pub fn serialize_piece(p: Piece) -> String {
 
 /// Describes the board, the 9x9 squares, in terms of relative coordinates.
 /// ／盤、つまり、9x9のマス目を、相対座標で表す。
-#[derive(Clone, Debug, Eq, PartialEq, Hash)]
+#[derive(Clone, Debug, Eq, PartialEq, Hash, Copy)]
 pub struct Board(pub [SingleRow; 9]);
 
 /// Describes a single row made up of 9 squares.
