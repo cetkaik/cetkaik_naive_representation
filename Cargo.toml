@@ -1,0 +1,11 @@
+[package]
+name = "cetkaik_naive_representation"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+serde = { version = "1.0.147", features = ["derive"] }
+cetkaik_fundamental = { path = "../cetkaik_fundamental" }
+cetkaik_interface = { path = "../cetkaik_interface" }
