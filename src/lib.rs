@@ -7,7 +7,7 @@
 //! 座標、9x9の盤面（`Board`）、そしてそれに手駒を加えたもの （`Field`）などをナイーブに表す
 
 use cetkaik_fundamental::{Profession, ColorAndProf, AbsoluteSide};
-use cetkaik_traits::CetkaikRepresentation;
+use cetkaik_traits::{CetkaikRepresentation, IsBoard};
 
 
 /// Defines things in terms of relative view: "which piece is opponent's?"／相対座標ベース。「どの駒が相手の駒？」という話をする
@@ -122,7 +122,7 @@ impl CetkaikRepresentation for CetkaikNaive {
         for rand_i in 0..9 {
             for rand_j in 0..9 {
                 let coord: crate::relative::Coord = [rand_i, rand_j];
-                if Self::relative_get(*board, coord).is_none() {
+                if board.peek(coord).is_none() {
                     ans.push(coord);
                 }
             }
@@ -136,7 +136,7 @@ impl CetkaikRepresentation for CetkaikNaive {
         for row in &[A, E, I, U, O, Y, AI, AU, IA] {
             for column in &[K, L, N, T, Z, X, C, M, P] {
                 let coord = absolute::Coord(*row, *column);
-                if Self::absolute_get(board, coord).is_none() {
+                if board.peek(coord).is_none() {
                     ans.push(coord);
                 }
             }
@@ -211,5 +211,31 @@ impl CetkaikRepresentation for CetkaikNaive {
     }
     fn has_prof_absolute(piece: Self::AbsolutePiece, prof: Profession) -> bool {
         piece.has_prof(prof)
+    }
+
+    fn match_on_relative_piece_and_apply<U>(
+        piece: Self::RelativePiece,
+        f_tam: &dyn Fn() -> U,
+        f_piece: &dyn Fn(cetkaik_fundamental::Color, Profession, Self::RelativeSide) -> U,
+    ) -> U {
+        match piece {
+            Self::RelativePiece::Tam2 => f_tam(),
+            Self::RelativePiece::NonTam2Piece {
+                color,
+                prof,
+                side,
+            } => f_piece(color, prof, side),
+        }
+    }
+
+    fn match_on_absolute_piece_and_apply<U>(
+        piece: Self::AbsolutePiece,
+        f_tam: &dyn Fn() -> U,
+        f_piece: &dyn Fn(cetkaik_fundamental::Color, Profession, cetkaik_fundamental::AbsoluteSide) -> U,
+    ) -> U {
+        match piece {
+            absolute::Piece::Tam2 => f_tam(),
+            absolute::Piece::NonTam2Piece { color, prof, side } => f_piece(color, prof, side),
+        }
     }
 }
