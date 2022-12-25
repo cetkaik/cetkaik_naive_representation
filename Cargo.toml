@@ -2,7 +2,7 @@
 name = "cetkaik_naive_representation"
 license = "MIT"
 description = "A naïve representation of cetkaik"
-version = "1.1.0"
+version = "1.2.0"
 edition = "2021"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
@@ -10,4 +10,4 @@ edition = "2021"
 [dependencies]
 serde = { version = "1.0.147", features = ["derive"] }
 cetkaik_fundamental = "1.0.0"
-cetkaik_traits = "1.1.1"
+cetkaik_traits = "1.2.0"

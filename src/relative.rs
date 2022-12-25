@@ -1,5 +1,5 @@
 use cetkaik_fundamental::{Color, Profession};
-use cetkaik_traits::{IsBoard, IsField};
+use cetkaik_traits::{IsBoard, IsField, IsPieceWithSide};
 
 /// Describes which player it is
 /// ／どちら側のプレイヤーであるかを指定する。
@@ -954,3 +954,17 @@ impl IsField for Field {
     }
 }
 
+impl IsPieceWithSide for Piece {
+    type Side = Side;
+
+    fn match_on_piece_and_apply<U>(
+        self,
+        f_tam: &dyn Fn() -> U,
+        f_piece: &dyn Fn(Color, Profession, Self::Side) -> U,
+    ) -> U {
+        match self {
+            Piece::Tam2 => f_tam(),
+            Piece::NonTam2Piece { color, prof, side } => f_piece(color, prof, side),
+        }
+    }
+}

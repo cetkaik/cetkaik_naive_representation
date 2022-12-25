@@ -44,6 +44,9 @@ impl CetkaikRepresentation for CetkaikNaive {
     fn to_absolute_coord(coord: Self::RelativeCoord, p: Self::Perspective) -> Self::AbsoluteCoord {
         crate::perspective::to_absolute_coord(coord, p)
     }
+    fn to_relative_coord(coord: Self::AbsoluteCoord, p: Self::Perspective) -> Self::RelativeCoord {
+        crate::perspective::to_relative_coord(coord, p)
+    }
     fn add_delta(
         coord: Self::RelativeCoord,
         row_delta: isize,
@@ -100,20 +103,6 @@ impl CetkaikRepresentation for CetkaikNaive {
     }
     fn is_upward(s: Self::RelativeSide) -> bool {
         s == crate::relative::Side::Upward
-    }
-    fn match_on_piece_and_apply<U>(
-        piece: Self::RelativePiece,
-        f_tam: &dyn Fn() -> U,
-        f_piece: &dyn Fn(Profession, Self::RelativeSide) -> U,
-    ) -> U {
-        match piece {
-            Self::RelativePiece::Tam2 => f_tam(),
-            Self::RelativePiece::NonTam2Piece {
-                color: _,
-                prof,
-                side,
-            } => f_piece(prof, side),
-        }
     }
     fn empty_squares_relative(
         board: &crate::relative::Board,
@@ -238,4 +227,6 @@ impl CetkaikRepresentation for CetkaikNaive {
             absolute::Piece::NonTam2Piece { color, prof, side } => f_piece(color, prof, side),
         }
     }
+
+
 }

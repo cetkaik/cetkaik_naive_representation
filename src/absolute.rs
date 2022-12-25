@@ -1,5 +1,5 @@
 use cetkaik_fundamental::{AbsoluteSide, Color, ColorAndProf, Profession};
-use cetkaik_traits::IsAbsoluteField;
+use cetkaik_traits::{IsAbsoluteField, IsPieceWithSide};
 use serde::{Deserialize, Serialize};
 use std::str::FromStr;
 
@@ -1017,6 +1017,25 @@ impl IsAbsoluteField for Field {
             board: yhuap_initial_board(),
             a_side_hop1zuo1: vec![],
             ia_side_hop1zuo1: vec![],
+        }
+    }
+}
+
+impl IsPieceWithSide for Piece {
+    type Side = AbsoluteSide;
+
+    fn match_on_piece_and_apply<U>(
+        self,
+        f_tam: &dyn Fn() -> U,
+        f_piece: &dyn Fn(Color, Profession, Self::Side) -> U,
+    ) -> U {
+        match self {
+            Self::Tam2 => f_tam(),
+            Self::NonTam2Piece {
+                color,
+                prof,
+                side,
+            } => f_piece(color, prof, side),
         }
     }
 }
