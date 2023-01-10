@@ -184,6 +184,23 @@ impl cetkaik_traits::IsBoard for Board {
             c
         );
     }
+
+    type EmptySquaresIter = std::vec::IntoIter<Coord>;
+
+    fn empty_squares(&self) -> std::vec::IntoIter<Coord> {
+        use Column::{C, K, L, M, N, P, T, X, Z};
+        use Row::{A, AI, AU, E, I, IA, O, U, Y};
+        let mut ans = vec![];
+        for row in &[A, E, I, U, O, Y, AI, AU, IA] {
+            for column in &[K, L, N, T, Z, X, C, M, P] {
+                let coord = Coord(*row, *column);
+                if self.peek(coord).is_none() {
+                    ans.push(coord);
+                }
+            }
+        }
+        ans.into_iter()
+    }
 }
 
 impl cetkaik_traits::IsField for Field {
@@ -205,7 +222,7 @@ impl cetkaik_traits::IsField for Field {
             .remove(&src)
             .ok_or("src does not contain a piece")?;
 
-        let Piece::NonTam2Piece { color: _color, prof: _prof, side } = src_piece 
+        let Piece::NonTam2Piece { color: _color, prof: _prof, side } = src_piece
         else {
             return Err("Expected a NonTam2Piece to be present at the src, but found a Tam2")
         };
@@ -1019,6 +1036,15 @@ impl IsAbsoluteField for Field {
             ia_side_hop1zuo1: vec![],
         }
     }
+
+    type Hop1Zuo1Iter = std::vec::IntoIter<cetkaik_fundamental::ColorAndProf>;
+
+    fn hop1zuo1_of(&self, side: cetkaik_fundamental::AbsoluteSide) -> Self::Hop1Zuo1Iter {
+        match side {
+            AbsoluteSide::IASide => self.ia_side_hop1zuo1.clone().into_iter(),
+            AbsoluteSide::ASide => self.a_side_hop1zuo1.clone().into_iter(),
+        }
+    }
 }
 
 impl IsPieceWithSide for Piece {
@@ -1031,11 +1057,7 @@ impl IsPieceWithSide for Piece {
     ) -> U {
         match self {
             Self::Tam2 => f_tam(),
-            Self::NonTam2Piece {
-                color,
-                prof,
-                side,
-            } => f_piece(color, prof, side),
+            Self::NonTam2Piece { color, prof, side } => f_piece(color, prof, side),
         }
     }
 }

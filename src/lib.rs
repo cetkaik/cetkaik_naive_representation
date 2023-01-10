@@ -6,9 +6,8 @@
 )]
 //! 座標、9x9の盤面（`Board`）、そしてそれに手駒を加えたもの （`Field`）などをナイーブに表す
 
-use cetkaik_fundamental::{Profession, ColorAndProf, AbsoluteSide};
-use cetkaik_traits::{CetkaikRepresentation, IsBoard};
-
+use cetkaik_fundamental::{AbsoluteSide, Profession};
+use cetkaik_traits::CetkaikRepresentation;
 
 /// Defines things in terms of relative view: "which piece is opponent's?"／相対座標ベース。「どの駒が相手の駒？」という話をする
 pub mod relative;
@@ -104,43 +103,6 @@ impl CetkaikRepresentation for CetkaikNaive {
     fn is_upward(s: Self::RelativeSide) -> bool {
         s == crate::relative::Side::Upward
     }
-    fn empty_squares_relative(
-        board: &crate::relative::Board,
-    ) -> Vec<crate::relative::Coord> {
-        let mut ans = vec![];
-        for rand_i in 0..9 {
-            for rand_j in 0..9 {
-                let coord: crate::relative::Coord = [rand_i, rand_j];
-                if board.peek(coord).is_none() {
-                    ans.push(coord);
-                }
-            }
-        }
-        ans
-    }
-    fn empty_squares_absolute(board: &crate::absolute::Board) -> Vec<Self::AbsoluteCoord> {
-        use absolute::Column::{C, K, L, M, N, P, T, X, Z};
-        use absolute::Row::{A, AI, AU, E, I, IA, O, U, Y};
-        let mut ans = vec![];
-        for row in &[A, E, I, U, O, Y, AI, AU, IA] {
-            for column in &[K, L, N, T, Z, X, C, M, P] {
-                let coord = absolute::Coord(*row, *column);
-                if board.peek(coord).is_none() {
-                    ans.push(coord);
-                }
-            }
-        }
-        ans
-    }
-    fn hop1zuo1_of(
-        side: cetkaik_fundamental::AbsoluteSide,
-        field: &Self::AbsoluteField,
-    ) -> Vec<ColorAndProf> {
-        match side {
-            AbsoluteSide::IASide => field.ia_side_hop1zuo1.clone(),
-            AbsoluteSide::ASide => field.a_side_hop1zuo1.clone(),
-        }
-    }
     fn as_board_absolute(field: &Self::AbsoluteField) -> &Self::AbsoluteBoard {
         &field.board
     }
@@ -209,24 +171,22 @@ impl CetkaikRepresentation for CetkaikNaive {
     ) -> U {
         match piece {
             Self::RelativePiece::Tam2 => f_tam(),
-            Self::RelativePiece::NonTam2Piece {
-                color,
-                prof,
-                side,
-            } => f_piece(color, prof, side),
+            Self::RelativePiece::NonTam2Piece { color, prof, side } => f_piece(color, prof, side),
         }
     }
 
     fn match_on_absolute_piece_and_apply<U>(
         piece: Self::AbsolutePiece,
         f_tam: &dyn Fn() -> U,
-        f_piece: &dyn Fn(cetkaik_fundamental::Color, Profession, cetkaik_fundamental::AbsoluteSide) -> U,
+        f_piece: &dyn Fn(
+            cetkaik_fundamental::Color,
+            Profession,
+            cetkaik_fundamental::AbsoluteSide,
+        ) -> U,
     ) -> U {
         match piece {
             absolute::Piece::Tam2 => f_tam(),
             absolute::Piece::NonTam2Piece { color, prof, side } => f_piece(color, prof, side),
         }
     }
-
-
 }

@@ -843,7 +843,24 @@ impl IsBoard for Board {
     fn assert_occupied(&self, c: Self::Coord) {
         assert!(self.peek(c).is_some());
     }
+
+    type EmptySquaresIter = std::vec::IntoIter<[usize; 2]>;
+
+    fn empty_squares(&self) -> Self::EmptySquaresIter {
+        let mut ans = vec![];
+        for row in 0..9 {
+            for column in 0..9 {
+                let coord = [row, column];
+                if self.peek(coord).is_none() {
+                    ans.push(coord);
+                }
+            }
+        }
+        ans.into_iter()
+    }
 }
+
+
 
 impl IsField for Field {
     type Board = Board;
@@ -864,7 +881,7 @@ impl IsField for Field {
         let src_piece =
             new_self.current_board.0[src[0]][src[1]].ok_or("src does not contain a piece")?;
 
-        let Piece::NonTam2Piece { color: _color, prof: _prof, side } = src_piece 
+        let Piece::NonTam2Piece { color: _color, prof: _prof, side } = src_piece
         else {
             return Err("Expected a NonTam2Piece to be present at the src, but found a Tam2")
         };
